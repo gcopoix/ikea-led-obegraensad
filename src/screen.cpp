@@ -109,17 +109,17 @@ void Screen_::persist()
 
 void Screen_::setPixelAtIndex(uint8_t index, uint8_t value, uint8_t brightness)
 {
-  if (index >= 0 && index < COLS * ROWS)
+  if (index < COLS * ROWS)
   {
-    this->renderBuffer_[index] = value <= 0 || brightness <= 0 ? 0 : (brightness > 255 ? 255 : brightness);
+    this->renderBuffer_[index] = value <= 0 || brightness <= 0 ? 0 : brightness;
   }
 }
 
 void Screen_::setPixel(uint8_t x, uint8_t y, uint8_t value, uint8_t brightness)
 {
-  if (x >= 0 && y >= 0 && x < COLS && y < ROWS)
+  if (x < COLS && y < ROWS)
   {
-    this->renderBuffer_[y * COLS + x] = value <= 0 || brightness <= 0 ? 0 : (brightness > 255 ? 255 : brightness);
+    this->renderBuffer_[y * COLS + x] = value <= 0 || brightness <= 0 ? 0 : brightness;
   }
 }
 
@@ -146,10 +146,9 @@ void Screen_::setup()
   SPI.begin(PIN_CLOCK, 34, PIN_DATA, 25); // SCLK, MISO, MOSI, SS
   SPI.beginTransaction(SPISettings(10000000, MSBFIRST, SPI_MODE0));
 
-  hw_timer_t *Screen_timer = timerBegin(0, 80, true);
-  timerAttachInterrupt(Screen_timer, &onScreenTimer, true);
-  timerAlarmWrite(Screen_timer, TIMER_INTERVAL_US, true);
-  timerAlarmEnable(Screen_timer);
+  hw_timer_t *Screen_timer = timerBegin(1000000/TIMER_INTERVAL_US);
+  timerAttachInterrupt(Screen_timer, &onScreenTimer);
+  timerAlarm(Screen_timer, 1, true, 0);
 #endif
 }
 

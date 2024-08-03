@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "ESP-IDF: Build",
+            //"command": "${command:espIdf.buildDevice}",
+            "type":"shell", "command": "idf.py build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "ESP-IDF: Clean",
+            "command": "${command:espIdf.fullClean}",
+            "group": "build",
+        }
+    ]
+}

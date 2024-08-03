@@ -5,7 +5,7 @@ void SnakePlugin::initGame()
   Screen.clear();
 
   this->position = {240, 241, 242};
-  for (const int &n : this->position)
+  for (const uint &n : this->position)
   {
     Screen.setPixelAtIndex(n, SnakePlugin::LED_TYPE_ON);
   }
@@ -271,43 +271,43 @@ void SnakePlugin::end()
 {
   Serial.println("GAME OVER!");
 
-  for (const int &n : this->position)
+  for (const uint &n : this->position)
   {
     Screen.setPixelAtIndex(n, SnakePlugin::LED_TYPE_OFF);
   }
   delay(200);
 
-  for (const int &n : this->position)
+  for (const uint &n : this->position)
   {
     Screen.setPixelAtIndex(n, SnakePlugin::LED_TYPE_ON);
   }
   delay(200);
 
-  for (const int &n : this->position)
+  for (const uint &n : this->position)
   {
     Screen.setPixelAtIndex(n, SnakePlugin::LED_TYPE_OFF);
   }
   delay(200);
 
-  for (const int &n : this->position)
+  for (const uint &n : this->position)
   {
     Screen.setPixelAtIndex(n, SnakePlugin::LED_TYPE_ON);
   }
   delay(200);
 
-  for (const int &n : this->position)
+  for (const uint &n : this->position)
   {
     Screen.setPixelAtIndex(n, SnakePlugin::LED_TYPE_OFF);
   }
   delay(200);
 
-  for (const int &n : this->position)
+  for (const uint &n : this->position)
   {
     Screen.setPixelAtIndex(n, SnakePlugin::LED_TYPE_ON);
   }
   delay(500);
 
-  for (const int &n : this->position)
+  for (const uint &n : this->position)
   {
     Screen.setPixelAtIndex(n, SnakePlugin::LED_TYPE_OFF);
     delay(200);

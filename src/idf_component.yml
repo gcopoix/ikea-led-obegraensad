@@ -1,0 +1,30 @@
+## IDF Component Manager Manifest File
+dependencies:
+  ## Required IDF version
+  idf:
+    version: ">=5.1.0,<5.2.0"
+  # # Put list of dependencies here
+  # # For components maintained by Espressif:
+  # component: "~1.0.0"
+  espressif/arduino-esp32:
+    version: "*"
+  # # For 3rd party components:
+  # username/component: ">=1.0.0,<2.0.0"
+  # username2/component2:
+  #   version: "~1.0.0"
+  #   # For transient dependencies `public` flag can be set.
+  #   # `public` flag doesn't have an effect dependencies of the `main` component.
+  #   # All dependencies of `main` are public by default.
+  #   public: true
+  ArduinoJson:
+    git: https://github.com/bblanchon/ArduinoJson.git
+    version: "v6.19.4"
+  AsyncTCP:
+    git: https://github.com/me-no-dev/AsyncTCP.git
+    version: "17039c38d2c6a6e39db007b011d8730dc1e6585d"
+  ESPAsyncWebServer:
+    git: https://github.com/me-no-dev/ESPAsyncWebServer.git
+    version: "7f3753454b1f176c4b6d6bcd1587a135d95ca63c"
+  WiFiManager:
+    git: https://github.com/tzapu/WiFiManager.git
+    version: "e978bc059c522404c01e06cd136fcf23234eb784"

@@ -118,8 +118,8 @@ void BreakoutPlugin::checkPaddleCollision()
   }
 
   // reverse movement direction on the edges
-  if (this->ballMovement[0] == 1 && (this->paddle[0].x - 1) == this->ball.x ||
-      this->ballMovement[0] == -1 && (this->paddle[this->PADDLE_WIDTH - 1].x + 1) == this->ball.x)
+  if ((this->ballMovement[0] == 1 && (this->paddle[0].x - 1) == this->ball.x) ||
+      (this->ballMovement[0] == -1 && (this->paddle[this->PADDLE_WIDTH - 1].x + 1) == this->ball.x))
   {
     this->ballMovement[0] *= -1;
     this->ballMovement[1] *= -1;
