@@ -1,10 +1,6 @@
-FROM debian:11-slim
+FROM node:18-bullseye-slim
 
 ARG DEBIAN_FRONTEND=nointeractive
-
-ARG USER_NAME=dev
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
 
 RUN  apt update \
   && apt install -y -q \
@@ -13,6 +9,7 @@ RUN  apt update \
      wget \
      curl \
      udev \
+     nano \
      usbutils \
      libusb-1.0-0 \
      libpython2.7 \
@@ -20,26 +17,41 @@ RUN  apt update \
      python3-venv \
      git
 
-## Set up udev rules for PlatformIO
+# Set up udev rules for PlatformIO
 RUN  wget -P /etc/udev/rules.d/ https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/system/99-platformio-udev.rules \
   && service udev restart 
 
-# Add user account and add to sudo group (password-free)
-RUN  groupadd --gid $USER_GID $USER_NAME \
-  && adduser --uid $USER_UID --gid $USER_GID --disabled-password --gecos "" $USER_NAME \
-  && usermod -a -G dialout $USER_NAME \
-  && usermod -a -G plugdev $USER_NAME \
-  && echo "$USER_NAME ALL = NOPASSWD: ALL" > /etc/sudoers.d/user \
+# Add node user to plugdev, dialout and sudo group (password-free)
+RUN  usermod -a -G dialout node \
+  && usermod -a -G plugdev node \
+  && echo "node ALL = NOPASSWD: ALL" > /etc/sudoers.d/user \
   && chmod 0440 /etc/sudoers.d/user
 
+# Download and install JLink tools
+RUN curl -d 'accept_license_agreement=accepted' \
+     -X POST https://www.segger.com/downloads/jlink/JLink_Linux_x86_64.deb \
+     -o /tmp/JLink_Linux_x86_64.deb \
+  && dpkg --unpack /tmp/JLink_Linux_x86_64.deb \
+  && rm /tmp/JLink_Linux_x86_64.deb \
+  && rm -f /var/lib/dpkg/info/jlink.postinst \
+  && (dpkg --configure jlink || apt install -yf) \
+  && apt install -y libxrandr2 libxfixes3 libxcursor1
+
 # Install PlatformIO CLI
-USER $USER_NAME
+USER node
 RUN  wget -P /tmp https://raw.githubusercontent.com/platformio/platformio-core-installer/master/get-platformio.py \
   && python3 /tmp/get-platformio.py \
-  && /home/$USER_NAME/.platformio/penv/bin/pio system completion install bash \
-  && echo 'export PATH="$PATH:$HOME/.platformio/penv/bin"' | tee -a /home/$USER_NAME/.bashrc \
+  && $HOME/.platformio/penv/bin/pio system completion install bash \
+  && echo 'export PATH="$PATH:$HOME/.platformio/penv/bin"' | tee -a /$HOME/.bashrc \
   && echo 'export PATH="$PATH:$HOME/.platformio/penv/bin"' | sudo tee -a /root/.bashrc
 
-#RUN $HOME/.platformio/penv/bin/pio pkg install --platform espressif32
+# install framework and toolings globally (needs to be installed only once in the docker)
+RUN  $HOME/.platformio/penv/bin/pio pkg install --global --platform espressif32 \
+  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     framework-arduinoespressif32 \
+  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     tool-scons \
+  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     tool-mkspiffs \
+  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     tool-mklittlefs \
+  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     tool-mkfatfs \
+  && $HOME/.platformio/penv/bin/pio system prune --cache --force
 
 CMD ["/bin/bash", "-c"]

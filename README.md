@@ -140,10 +140,19 @@ Thanks to [RBEGamer](https://github.com/RBEGamer) who is showing in this [issue]
   - First run `npm i`
   - Set your device IP inside the `.env` file
   - Start the server with `npm run dev`
-  - Build it with `npm run build`. This command creates the `webgui.cpp` for you.
+  - Build it with `npm run build`. This command creates the `webgui.cpp` for you \
+    This is handled automatically in an [pre-buildstep](frontend/webgui.py) within platform.io.
 
 - Build frontend using `Docker`
   - From the root of the repo, run `docker compose run node`
+
+- Build/Develop frontend using `Visual Studio` [DevContainer](https://code.visualstudio.com/docs/devcontainers/containers)
+  -  make sure you have [Docker](https://www.docker.com/get-started) the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) installed 
+  - Simply open the folder with VisualStudio Code
+  - You will be asked to re-open the project in the Container. \
+    Please acknoledge.
+  - VisualStudio code will initialize the development container with the required tools, platform.io tools/frameworks and VSCode plugins (takes some minutes the first time only) and will present you a fully working [platform.io](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) development environment.
+
 
 ## Plugins
 
