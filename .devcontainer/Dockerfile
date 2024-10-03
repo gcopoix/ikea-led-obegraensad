@@ -19,7 +19,7 @@ RUN  apt update \
 
 # Set up udev rules for PlatformIO
 RUN  wget -P /etc/udev/rules.d/ https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/system/99-platformio-udev.rules \
-  && service udev restart 
+  && service udev restart
 
 # Add node user to plugdev, dialout and sudo group (password-free)
 RUN  usermod -a -G dialout node \
@@ -45,13 +45,19 @@ RUN  wget -P /tmp https://raw.githubusercontent.com/platformio/platformio-core-i
   && echo 'export PATH="$PATH:$HOME/.platformio/penv/bin"' | tee -a /$HOME/.bashrc \
   && echo 'export PATH="$PATH:$HOME/.platformio/penv/bin"' | sudo tee -a /root/.bashrc
 
-# install framework and toolings globally (needs to be installed only once in the docker)
-RUN  $HOME/.platformio/penv/bin/pio pkg install --global --platform espressif32 \
-  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     framework-arduinoespressif32 \
-  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     tool-scons \
-  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     tool-mkspiffs \
-  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     tool-mklittlefs \
-  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     tool-mkfatfs \
+# globally install framework and toolings (needs to be installed only once in the docker)
+RUN  $HOME/.platformio/penv/bin/pio pkg install --global --platform espressif32@6.9.0 \
+  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     framework-arduinoespressif32@3.20017.0 \
+  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     espressif/toolchain-riscv32-esp@8.4.0+2021r2-patch5 \
+  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     espressif/toolchain-xtensa-esp32@12.2.0+20230208 \
+  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     espressif/toolchain-xtensa-esp32s2@8.4.0+2021r2-patch5 \
+  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     tool-scons@4.40801.0 \
+  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     tool-mkspiffs@1.200.0 \
+  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     tool-mklittlefs@1.203.210628 \
+  && $HOME/.platformio/penv/bin/pio pkg install --global --tool     tool-mkfatfs@2.0.1 \
   && $HOME/.platformio/penv/bin/pio system prune --cache --force
+
+# Turn off git advice about detachedHead
+RUN git config --global advice.detachedHead false
 
 CMD ["/bin/bash", "-c"]

@@ -9,22 +9,26 @@
 	"customizations": {
 		"vscode": {
 			"settings": {
-				"terminal.integrated.defaultProfile.linux": "bash",
-				"cmake.configureOnOpen": false
+				"files.trimTrailingWhitespace": true,
+				"files.insertFinalNewline": true,
+				"files.trimFinalNewlines": true,
+				"extensions.ignoreRecommendations": true,
+				"platformio-ide.disablePIOHomeStartup": true
 			},
 			"extensions": [
 				"ms-vscode.cpptools",
 				"platformio.platformio-ide",
 				"ms-vscode.vscode-serial-monitor",
-				"mhutchie.git-graph"
+				"mhutchie.git-graph",
+				"hnw.vscode-auto-open-markdown-preview"
 			]
 		}
 	},
-	//"forwardPorts": [ 3000 ],
+	"forwardPorts": [ 3000 ],
+	"mounts": [
+		"source=/dev/bus/usb,target=/dev/bus/usb,type=bind,consistency=cached" // necessary to handle USB device (re-)connect
+	],
 	"runArgs": [
-		"--cap-add=SYS_PTRACE", // new
-		"--security-opt", "seccomp=unconfined", // new
-		"-p", "3000",
 		"--network=host",
 		"--privileged"
 	],

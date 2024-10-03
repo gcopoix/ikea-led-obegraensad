@@ -1,0 +1,43 @@
+{
+	// https://code.visualstudio.com/docs/editor/workspaces
+	// https://code.visualstudio.com/docs/editor/multi-root-workspaces
+	// https://code.visualstudio.com/docs/editor/variables-reference
+
+	"folders": [
+		{
+			"path": "."
+		},
+	],
+	// extensions.json section
+	"extensions": {
+		"recommendations": [
+			"ms-azuretools.vscode-docker",       // Docker support
+			"ms-vscode-remote.remote-containers" // remote/devcontainer support
+		],
+		"unwantedRecommendations": [
+			"platformio.platformio-ide"
+		]
+	},
+	// settings.json section
+	"settings": {
+		// forbid cmake configure on start
+		"cmake.configureOnStart": false,
+		"cmake.configureOnOpen": false
+	},
+	// tasks.json section
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+		],
+		"inputs": [
+		]
+	},
+	// launch.json section
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+		],
+		"inputs": [
+		]
+	}
+}

@@ -66,35 +66,55 @@ Above is a microcontroller. You have to remove it, because it contains the stand
 
 <img src="https://user-images.githubusercontent.com/86414213/205998862-e9962695-1328-49ea-b546-be592cbad3c2.jpg" width="90%" />
 
-## Clone repository and set variables
 
-- Open folder with VSCode
-- Install platformIO (https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide)
-- Set all variables
+## VisualStudio Code Development Environment
+This project bringt a complete [DevContainer](https://code.visualstudio.com/docs/devcontainers/containers) setup for [VisualStudio Code](https://code.visualstudio.com)
+
+### Prerequisites
+The following tools need to be installed on the host system
+- [VisualStudio Code](https://code.visualstudio.com/docs/setup/setup-overview)
+- [Docker](https://docs.docker.com/desktop)
+
+The rest (required tools, plugins, ...) is defined in
+
+| File | Content |
+|----|---|
+| [code-workspace](ikea.code-workspace) | initial extensions, tasks
+| [devcontainer.json](.devcontainer/devcontainer.json) | extensions, settings, Docker args
+| [Dockerfile](.devcontainer/Dockerfile) | container setup with required tools
+
+### Launch Development Entironment
+Simply open the project workspace by double-click in the [ikea.code-workspace](ikea.code-workspace) file. \
+You will be asked to re-open the project in the Container. \
+Please acknoledge, this is mandatory for the devcontainer setup.
+
+VisualStudio code will initialize the development container with the required tools, platform.io tools/frameworks and VSCode plugins (takes some minutes the first time only) and will present you a fully working [platform.io](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) development environment.
+
+## Project Configuration
+
+- [include/constants.h](include/constants.h) \
+  defines several variables  for this project:
   - Wifi (on ESP8266)
   - Upload
   - Your Pins
   - Latitude, Longitude, City etc. (https://github.com/chubin/wttr.in)
+- [include/secrets.h](include/secrets.h) \
+  defines the WiFi Credentials for the project \
+  ```cpp
+  #pragma once
 
-Variables can be found inside `include/constants.h`.
+  #define WIFI_HOSTNAME ""
 
-### Create `include/secrets.h`
+  #ifdef ESP8266
+  #define WIFI_SSID ""
+  #define WIFI_PASSWORD ""
+  #endif
 
-```cpp
-#pragma once
-
-#define WIFI_HOSTNAME ""
-
-#ifdef ESP8266
-#define WIFI_SSID ""
-#define WIFI_PASSWORD ""
-#endif
-
-#define OTA_USERNAME ""
-#define OTA_PASSWORD ""
-```
-
-also set username and password inside `upload.py`, if you want to use OTA Updates.
+  #define OTA_USERNAME ""
+  #define OTA_PASSWORD ""
+  ```
+  A dummy file with empty information like shown above is in already in the repository, but should be modified to your needs. \
+  Also set username and password inside [upload.py](upload.py), if you want to use OTA Updates.
 
 ### Configuring WiFi with WiFi manager
 
@@ -105,7 +125,7 @@ to connect to known access points. If no known access point is available, the de
 `Ikea Display Setup WiFi`. Connect to this network on any device. A captive portal will pop up and will take you
 through the configuration process. After a successful connection, the device will reboot and is ready to go.
 
-The name of the created network can be changed by modifying `WIFI_MANAGER_SSID` in `include/constants.h`.
+The name of the created network can be changed by modifying `WIFI_MANAGER_SSID` in [include/constants.h](include/constants.h).
 
 ### PINS
 
@@ -130,29 +150,25 @@ Thanks to [RBEGamer](https://github.com/RBEGamer) who is showing in this [issue]
 
 # Development
 
-- `src` contains the arduino code.
+## source folders
+The main folders within the project:
+| Folder | Content
+|---|---|
+| [src](src) | Contains the arduino code.<br>Run it with platform io.<br>You can uncomment the OTA lines in `platformio.ini` if you want.<br>(replace the IP with your device`IP). |
+| [include](include) |  contains the include files |
+| [frontend](frontend) | contains the web code |
+| [.devcontainer](.devcontainer) | contains the VisualStudio Code Development Container setup |
 
-  - Run it with platform io
-  - You can uncomment the OTA lines in `platformio.ini` if you want. Replace the IP with your device IP.
+## Webcode build
+- First run `npm i`
+- Set your device IP inside the `.env` file
+- Start the server with `npm run dev`
+- Build it with `npm run build`. This command creates the `webgui.cpp` for you
 
-- `frontend` contains the web code.
-
-  - First run `npm i`
-  - Set your device IP inside the `.env` file
-  - Start the server with `npm run dev`
-  - Build it with `npm run build`. This command creates the `webgui.cpp` for you \
-    This is handled automatically in an [pre-buildstep](frontend/webgui.py) within platform.io.
-
-- Build frontend using `Docker`
-  - From the root of the repo, run `docker compose run node`
-
-- Build/Develop frontend using `Visual Studio` [DevContainer](https://code.visualstudio.com/docs/devcontainers/containers)
-  -  make sure you have [Docker](https://www.docker.com/get-started) the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) installed 
-  - Simply open the folder with VisualStudio Code
-  - You will be asked to re-open the project in the Container. \
-    Please acknoledge.
-  - VisualStudio code will initialize the development container with the required tools, platform.io tools/frameworks and VSCode plugins (takes some minutes the first time only) and will present you a fully working [platform.io](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) development environment.
-
+This build step to create the `webgui.cpp` is integrated automatically in the platform.io build chain by an additional [webgui.py](frontend/webgui.py) pre-build step
+```
+extra_scripts = pre:frontend/webgui.py
+```
 
 ## Plugins
 
