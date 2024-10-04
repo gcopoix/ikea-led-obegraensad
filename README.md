@@ -110,12 +110,15 @@ VisualStudio code will initialize the development container with the required to
   #define WIFI_PASSWORD ""
   #endif
 
-  #define OTA_USERNAME ""
-  #define OTA_PASSWORD ""
+  #define OTA_USERNAME "admin"
+  #define OTA_PASSWORD "ikea-led-wall"
   ```
   A dummy file with empty information like shown above is in already in the repository, but should be modified to your needs. \
-  Also set username and password inside [upload.py](upload.py), if you want to use OTA Updates.
+  Also set username and password inside [platformio.ini](platformio.ini) curl `-u` parameters and the URL of your IKEA display, if you want to use OTA Updates:
+  ```
+  upload_command = curl -u admin:ikea-led-wall -X POST http://192.168.178.141/update -T .pio/build/<project-target>/firmware.bin
 
+  ```
 ### Configuring WiFi with WiFi manager
 
 _Note:_ The WiFi manager only works on ESP32. For ESP8266, `WIFI_SSID` and `WIFI_PASSWORD` need to be provided in `secrets.h`.
