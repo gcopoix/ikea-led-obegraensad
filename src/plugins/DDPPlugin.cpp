@@ -52,7 +52,7 @@ void DDPPlugin::setup()
             else if (count == ROWS)
             {
                 // virtual row mode
-                for (unsigned i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                 {
                     uint8_t brightness = (data[i * 3] + data[i * 3 + 1] + data[i * 3 + 2]) / 3; // average RGB
                     // uint8_t brightness = std::max(data[i * 3], std::max(data[i * 3 + 1], data[i * 3 + 2])); // maximum brightness
@@ -65,7 +65,7 @@ void DDPPlugin::setup()
 
             else
             {
-                for (unsigned i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                 {
                     uint8_t brightness = (data[i * 3] + data[i * 3 + 1] + data[i * 3 + 2]) / 3; // average RGB
                     // uint8_t brightness = std::max(data[i * 3], std::max(data[i * 3 + 1], data[i * 3 + 2])); // maximum brightness

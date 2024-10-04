@@ -24,7 +24,6 @@
 			]
 		}
 	},
-	"forwardPorts": [ 3000 ],
 	"mounts": [
 		"source=/dev/bus/usb,target=/dev/bus/usb,type=bind,consistency=cached" // necessary to handle USB device (re-)connect
 	],

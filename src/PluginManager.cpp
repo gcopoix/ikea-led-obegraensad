@@ -154,7 +154,7 @@ void PluginManager::activateNextPlugin()
 
     if (activePlugin)
     {
-        if (activePlugin->getId() <= getNumPlugins() - 1)
+        if (activePlugin->getId() <= (int)getNumPlugins() - 1)
         {
             setActivePluginById(activePlugin->getId() + 1);
         }

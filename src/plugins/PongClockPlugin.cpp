@@ -11,7 +11,7 @@ static const uint8_t Y_MIN = 6;
 
 void PongClockPlugin::drawCharacter(int x, int y, std::vector<int> bits, int bitCount, uint8_t brightness)
 {
-  for (int i = 0; i < bits.size(); i += bitCount)
+  for (size_t i = 0; i < bits.size(); i += bitCount)
   {
     for (int j = 0; j < bitCount; j++)
     {

@@ -19,9 +19,9 @@ extern std::vector<std::vector<int>> weatherIcons;
 struct font
 {
     std::string name;
-    int sizeX;
-    int sizeY;
-    int offset;
+    unsigned int sizeX;
+    unsigned int sizeY;
+    unsigned int offset;
     std::vector<std::vector<int>> data;
 };
 

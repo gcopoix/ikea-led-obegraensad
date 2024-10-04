@@ -31,7 +31,7 @@ void AnimationPlugin::loop()
     {
         std::vector<int> bits = Screen.readBytes(customAnimationFrames[this->step]);
 
-        for (int i = 0; i < bits.size(); i++)
+        for (size_t i = 0; i < bits.size(); i++)
         {
             Screen.setPixelAtIndex(i, bits[i]);
         }

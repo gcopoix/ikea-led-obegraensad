@@ -8,7 +8,7 @@ using namespace std;
 
 bool Screen_::isCacheEmpty()
 {
-  for (int i = 0; i < sizeof(this->cache); i++)
+  for (size_t i = 0; i < sizeof(this->cache); i++)
   {
     if (this->cache[i] != 0)
     {
@@ -238,7 +238,7 @@ void Screen_::drawRectangle(int x, int y, int width, int height, bool fill, int 
 
 void Screen_::drawCharacter(int x, int y, std::vector<int> bits, int bitCount, uint8_t brightness)
 {
-  for (int i = 0; i < bits.size(); i += bitCount)
+  for (size_t i = 0; i < bits.size(); i += bitCount)
   {
     for (int j = 0; j < bitCount; j++)
     {
@@ -252,7 +252,7 @@ std::vector<int> Screen_::readBytes(std::vector<int> bytes)
   vector<int> bits;
   int k = 0;
 
-  for (int i = 0; i < bytes.size(); i++)
+  for (size_t i = 0; i < bytes.size(); i++)
   {
     for (int j = 8 - 1; j >= 0; j--)
     {
@@ -267,7 +267,7 @@ std::vector<int> Screen_::readBytes(std::vector<int> bytes)
 
 void Screen_::drawNumbers(int x, int y, std::vector<int> numbers, uint8_t brightness)
 {
-  for (int i = 0; i < numbers.size(); i++)
+  for (size_t i = 0; i < numbers.size(); i++)
   {
     this->drawCharacter(x + (i * 5), y, this->readBytes(smallNumbers[numbers.at(i)]), 4, brightness);
   }
@@ -290,7 +290,7 @@ void Screen_::setBrightness(uint8_t brightness)
 
 void Screen_::drawBigNumbers(int x, int y, std::vector<int> numbers, uint8_t brightness)
 {
-  for (int i = 0; i < numbers.size(); i++)
+  for (size_t i = 0; i < numbers.size(); i++)
   {
     this->drawCharacter(x + (i * 8), y, this->readBytes(bigNumbers[numbers.at(i)]), 8, brightness);
   }
@@ -356,7 +356,7 @@ void Screen_::scrollGraph(std::vector<int> graph, int miny, int maxy, int delayT
     for (int x = 0; x < ROWS; x++)
     {
       int index = i + x;
-      if (index >= 0 && index < graph.size())
+      if (index >= 0 && index < (int)graph.size())
       {
 
         int y2 = ROWS - ((graph[index] - miny + 1) * ROWS) / (maxy - miny + 1);

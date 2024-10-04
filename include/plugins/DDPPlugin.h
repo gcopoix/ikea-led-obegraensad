@@ -1,8 +1,11 @@
 #pragma once
 
 #include "PluginManager.h"
+#ifdef ESP32
 #include "AsyncUDP.h"
-
+#else
+#include "ESPAsyncUDP.h"
+#endif
 class DDPPlugin : public Plugin
 {
 private:

@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-#ifdef ESP82666
+#ifdef ESP8266
 /* Fix duplicate defs of HTTP_GET, HTTP_POST, ... in ESPAsyncWebServer.h */
 #define WEBSERVER_H
 #endif

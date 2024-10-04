@@ -11,7 +11,7 @@ void onOTAStart()
 
   std::vector<int> bits = Screen.readBytes(letterU);
 
-  for (int i = 0; i < bits.size(); i++)
+  for (size_t i = 0; i < bits.size(); i++)
   {
     Screen.setPixelAtIndex(i, bits[i]);
   }
@@ -21,7 +21,7 @@ void onOTAEnd()
 {
   std::vector<int> bits = Screen.readBytes(letterR);
 
-  for (int i = 0; i < bits.size(); i++)
+  for (size_t i = 0; i < bits.size(); i++)
   {
     Screen.setPixelAtIndex(i, bits[i]);
   }
