@@ -10,8 +10,8 @@ RUN apt-get update \
   && apt install -y -q \
   udev \
   sudo \
-  cmake \
   git \
+  nano \
   libglib2.0-0 \
   libnuma1 \
   libpixman-1-0 \

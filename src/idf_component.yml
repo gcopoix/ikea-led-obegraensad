@@ -18,7 +18,7 @@ dependencies:
   #   public: true
   ArduinoJson:
     git: https://github.com/bblanchon/ArduinoJson.git
-    version: "v6.19.4"
+    version: "v6.21.5"
   AsyncTCP:
     git: https://github.com/me-no-dev/AsyncTCP.git
     version: "17039c38d2c6a6e39db007b011d8730dc1e6585d"
@@ -27,4 +27,4 @@ dependencies:
     version: "7f3753454b1f176c4b6d6bcd1587a135d95ca63c"
   WiFiManager:
     git: https://github.com/tzapu/WiFiManager.git
-    version: "e978bc059c522404c01e06cd136fcf23234eb784"
+    version: "v2.0.16-rc.2"

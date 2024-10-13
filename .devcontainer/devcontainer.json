@@ -1,48 +1,64 @@
 // https://containers.dev/implementors/json_reference/
-
 {
 	"name": "ESP-IDF QEMU",
 	"build": {
 		"dockerfile": "Dockerfile",
+		"options": [
+		],
 		"args": {
-            "network": "host"
+			"USER_UID": "1000"
 		}
-		//"args": { "USER_UID": "${localEnv:USER}" }
 	},
 	"customizations": {
 		"vscode": {
 			"settings": {
-				//"terminal.integrated.defaultProfile.linux": "bash",
-				"idf.espIdfPath": "/opt/esp/idf",
-				//"idf.pythonBinPath": "/opt/esp/python_env/idf5.4_py3.12_env/bin/python",
-				"idf.pythonBinPath": "/opt/esp/python_env/idf5.3_py3.10_env/bin/python",
-				//"idf.pythonBinPath": "/opt/esp/python_env/idf4.4_py3.8_env/bin/python",
-				"idf.toolsPath": "/opt/esp",
-				//"idf.gitPath": "/usr/bin/git",
+				"terminal.integrated.defaultProfile.linux": "bash",
 				"idf.showOnboardingOnInit": false,
-				"idf.enableSizeTaskAfterBuildTask": false,
+				"idf.espIdfPath": "/opt/esp/idf",
+				"idf.customExtraPaths": "",
+				"idf.pythonBinPath": "/opt/esp/python_env/idf5.1_py3.8_env/bin/python",
+				"idf.toolsPath": "/opt/esp",
+				"idf.gitPath": "/usr/bin/git",
 				"cmake.configureOnOpen": false,
+				"cmake.options.advanced": {
+					// hide cmake status bar icons for build/launch/debug
+					"launch": { "statusBarVisibility": "hidden" },
+					"debug":  { "statusBarVisibility": "hidden" },
+					"build":  { "statusBarVisibility": "hidden" }
+				},
+				"C_Cpp.default.compileCommands": "${config:idf.buildPath}/compile_commands.json"
 			},
 			"extensions": [
-				"espressif.esp-idf-extension",
+				"espressif.esp-idf-extension@1.8.0",     // main ESP IDF support
 				"ms-vscode.cpptools-extension-pack",
-				"ms-vscode.cmake-tools",
-				"ms-vscode.vscode-serial-monitor"
+				"ms-vscode.cmake-tools",                 // cmake support
+				"mhutchie.git-graph",                    // git graph support
+				"hnw.vscode-auto-open-markdown-preview", // automatic Markdown preview
+				"ms-vscode.vscode-serial-monitor"        // serial terminal
 			]
 		},
 		"codespaces": {
 			"settings": {
 				"terminal.integrated.defaultProfile.linux": "bash",
 				"idf.espIdfPath": "/opt/esp/idf",
-				"idf.pythonBinPath": "/opt/esp/python_env/idf5.3_py3.10_env/bin/python",
+				"idf.pythonBinPath": "/opt/esp/python_env/idf5.1_py3.8_env/bin/python",
 				"idf.toolsPath": "/opt/esp",
 				"idf.gitPath": "/usr/bin/git"
 			},
 			"extensions": [
-				"espressif.esp-idf-extension",
-				"espressif.esp-idf-web"
+				"espressif.esp-idf-extension",    // main ESP IDF support
+				//"espressif.esp-idf-web"
+				"ms-vscode.cmake-tools",          // cmake support
+				"mhutchie.git-graph",             // git graph support
+				"ms-vscode.vscode-serial-monitor" // serial terminal
 			]
 		}
 	},
-	"runArgs": ["--privileged" ]
+	"runArgs": [
+		"--privileged"
+	],
+	"mounts": [
+		"source=/dev,target=/dev,type=bind,consistency=cached"
+	],
+	"postAttachCommand": "sudo service udev restart" // required to detect USB device reconnect properly
 }
